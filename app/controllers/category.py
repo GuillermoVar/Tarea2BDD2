@@ -9,6 +9,7 @@ from app.controllers import duplicate_error_handler, not_found_error_handler
 from litestar.dto import DTOData
 from app.models import Category
 
+
 class CategoryController(Controller):
     path = "/categories"
     tags = ["categories"]
@@ -21,21 +22,39 @@ class CategoryController(Controller):
 
     @get("/")
     async def list_categories(self, categories_repo: CategoryRepository) -> Sequence[Category]:
+        """Get all categories."""
         return categories_repo.list()
 
     @get("/{id:int}")
     async def get_category(self, id: int, categories_repo: CategoryRepository) -> Category:
+        """Get category by ID."""
         return categories_repo.get(id)
 
     @post("/", dto=CategoryCreateDTO)
-    async def create_category(self, data: DTOData[Category], categories_repo: CategoryRepository) -> Category:
+    async def create_category(
+        self,
+        data: DTOData[Category],
+        categories_repo: CategoryRepository
+    ) -> Category:
+        """Create a new category."""
         return categories_repo.add(data.create_instance())
 
     @patch("/{id:int}", dto=CategoryUpdateDTO)
-    async def update_category(self, id: int, data: DTOData[Category], categories_repo: CategoryRepository) -> Category:
-        category, _ = categories_repo.get_and_update("id", id=id, **data.as_builtins())
+    async def update_category(
+        self,
+        id: int,
+        data: DTOData[Category],
+        categories_repo: CategoryRepository
+    ) -> Category:
+        """Update a category."""
+        category, _ = categories_repo.get_and_update(
+            match_fields="id",
+            id=id,
+            **data.as_builtins(),
+        )
         return category
 
     @delete("/{id:int}")
     async def delete_category(self, id: int, categories_repo: CategoryRepository) -> None:
+        """Delete a category."""
         categories_repo.delete(id)
