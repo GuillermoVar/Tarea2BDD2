@@ -46,6 +46,25 @@ class BookController(Controller):
         data: DTOData[Book],
         books_repo: BookRepository,
     ) -> Book:
+        
+        valid_languages = {"es", "en", "fr", "de", "it", "pt"}
+
+        language = data.as_builtins().get("language")
+
+        if language not in valid_languages:
+            raise HTTPException(
+                status_code=400,
+                detail="El idioma debe ser uno de: es, en, fr, de, it, pt."
+            )
+        
+        # Validar stock > 0
+        if data.as_builtins().get("stock", 1) <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="El stock debe ser mayor a 0."
+    )
+
+
         """Create a new book."""
         # Validar que el año esté entre 1000 y el año actual
         if not (1000 <= data.as_builtins()["published_year"] <= 2024):
@@ -62,6 +81,26 @@ class BookController(Controller):
         data: DTOData[Book],
         books_repo: BookRepository,
     ) -> Book:
+        
+        payload = data.as_builtins()
+
+        # Validar stock >= 0 si viene en el body
+        if "stock" in payload and payload["stock"] < 0:
+            raise HTTPException(
+                status_code=400,
+                detail="El stock no puede ser negativo."
+            )
+
+        # Validar language en update también
+        if "language" in payload:
+            valid_languages = {"es", "en", "fr", "de", "it", "pt"}
+            if payload["language"] not in valid_languages:
+                raise HTTPException(
+                    status_code=400,
+                    detail="El idioma debe ser uno de: es, en, fr, de, it, pt."
+                )
+
+
         """Update a book by ID."""
         book, _ = books_repo.get_and_update(match_fields="id", id=id, **data.as_builtins())
 
