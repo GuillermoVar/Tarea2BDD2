@@ -125,6 +125,17 @@ Docente: Diego Álvarez S.
 
 * El campo is_active fue bloqueado en los DTOs de creación y actualización para evitar que el usuario lo modifique directamente.
 
+**Actualización del modelo Loan - Punto 5**
+* Se actualizó el modelo Loan para incluir los campos due_date, fine_amount y un campo status con el nuevo enum LoanStatus (ACTIVE, RETURNED, OVERDUE).
+
+* Se creó y aplicó la migración de Alembic para añadir estas columnas a la tabla loans y crear el tipo ENUM en PostgreSQL.
+
+* La lógica de negocio fue implementada en el controlador: 
+  
+  * el campo due_date ahora se calcula automáticamente a 14 días a partir de loan_dt en la creación
+  
+  * el endpoint de actualización fue asegurado para permitir que solo se pueda modificar el estado (status) del préstamo.
+
 ## Cumplimiento de Requerimientos - Tarea 2
 
 | Nº | Requerimiento | Estado | 
@@ -133,7 +144,7 @@ Docente: Diego Álvarez S.
 | **2** | Crear modelo Review con relaciones y validaciones | **CUMPLIDO** |
 | **3** | Actualizar modelo Book con inventario, descripción y validaciones | **CUMPLIDO** |
 | **4** | Actualizar modelo User (email, phone, address, is_active) | **CUMPLIDO** |
-| **5** | Actualizar modelo Loan con due_date, fine_amount y LoanStatus | **** |
+| **5** | Actualizar modelo Loan con due_date, fine_amount y LoanStatus | **CUMPLIDO** |
 | **6** | Implementar métodos avanzados en BookRepository + endpoints | **** |
 | **7** | Implementar métodos en LoanRepository + endpoints | **** |
 | **8** | Crear base de datos inicial + initial_data.sql | **** |

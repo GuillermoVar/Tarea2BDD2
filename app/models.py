@@ -4,8 +4,18 @@ from dataclasses import dataclass
 from datetime import date, datetime
 
 from advanced_alchemy.base import BigIntAuditBase
-from sqlalchemy import ForeignKey, Table, Column, String
+from sqlalchemy import ForeignKey, Table, Column, String, Numeric, Enum as SAEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from decimal import Decimal
+from typing import Optional
+
+from enum import Enum
+
+class LoanStatus(str, Enum):
+    ACTIVE = "ACTIVE"
+    RETURNED = "RETURNED"
+    OVERDUE = "OVERDUE"
 
 
 class User(BigIntAuditBase):
@@ -90,8 +100,17 @@ class Loan(BigIntAuditBase):
 
     loan_dt: Mapped[date] = mapped_column(default=datetime.today)
     return_dt: Mapped[date | None]
+
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
+
+    due_date: Mapped[date] = mapped_column(nullable=False)
+    fine_amount: Mapped[Optional[Decimal]] = mapped_column(Numeric(10, 2), nullable=True)
+    status: Mapped[LoanStatus] = mapped_column(
+        SAEnum(LoanStatus), 
+        default=LoanStatus.ACTIVE, 
+        nullable=False
+        )
 
     user: Mapped[User] = relationship(back_populates="loans")
     book: Mapped[Book] = relationship(back_populates="loans")
