@@ -18,6 +18,8 @@ class User(BigIntAuditBase):
     password: Mapped[str]
 
     loans: Mapped[list["Loan"]] = relationship(back_populates="user")
+    reviews: Mapped[list["Review"]] = relationship(back_populates="user")
+
 
 
 # Tabla intermedia Book-Category (many-to-many)
@@ -41,6 +43,8 @@ class Book(BigIntAuditBase):
     published_year: Mapped[int]
 
     loans: Mapped[list["Loan"]] = relationship(back_populates="book")
+    reviews: Mapped[list["Review"]] = relationship(back_populates="book")
+
 
     # Nueva relacion
     categories: Mapped[list["Category"]] = relationship(
@@ -78,6 +82,24 @@ class Loan(BigIntAuditBase):
 
     user: Mapped[User] = relationship(back_populates="loans")
     book: Mapped[Book] = relationship(back_populates="loans")
+
+class Review(BigIntAuditBase):
+    """Review model."""
+
+    __tablename__ = "reviews"
+
+    rating: Mapped[int]
+    comment: Mapped[str]
+    review_date: Mapped[date]
+
+    # FK
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
+
+    # relaciones
+    user: Mapped["User"] = relationship(back_populates="reviews")
+    book: Mapped["Book"] = relationship(back_populates="reviews")
+
 
 
 @dataclass

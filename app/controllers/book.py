@@ -12,8 +12,9 @@ from litestar.params import Parameter
 
 from app.controllers import duplicate_error_handler, not_found_error_handler
 from app.dtos.book import BookCreateDTO, BookReadDTO, BookUpdateDTO
-from app.models import Book, BookStats
-from app.repositories.book import BookRepository, provide_book_repo, provide_category_repo
+from app.models import Book, BookStats, Category
+from app.repositories.book import BookRepository, provide_book_repo
+from app.repositories.category import provide_category_repo, CategoryRepository
 
 
 class BookController(Controller):
@@ -23,7 +24,7 @@ class BookController(Controller):
     tags = ["books"]
     return_dto = BookReadDTO
     dependencies = {"books_repo": Provide(provide_book_repo), "categories_repo": Provide(provide_category_repo),
-}}
+}
     exception_handlers = {
         NotFoundError: not_found_error_handler,
         DuplicateKeyError: duplicate_error_handler,
