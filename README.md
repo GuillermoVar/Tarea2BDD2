@@ -1,12 +1,13 @@
 # API de Gestión de Biblioteca — Tarea 2
 
 Bases de Datos II — Ingeniería en Computación e Informática
+
 Estudiante: Guillermo Vargas
 Docente: Diego Álvarez S.
 
 ## Cambios Implementados 
 
-***Diseño e Implementación — Punto 1 (Category + relación Book–Category) ***
+***Diseño e Implementación — Punto 1 (Category + relación Book–Category)***
 
 * Se creó el modelo Category con atributos id, name y description.
 
@@ -16,31 +17,31 @@ Docente: Diego Álvarez S.
 
 * Se generó y aplicó una migración completa con Alembic incluyendo tabla, índices y FK.
 
-Se crearon los DTOs:
+* Se crearon los DTOs:
 
-  CategoryReadDTO
+  * CategoryReadDTO
 
-  CategoryCreateDTO
+  * CategoryCreateDTO
 
-  CategoryUpdateDTO
+  * CategoryUpdateDTO
 
-Se implementó CategoryRepository siguiendo el patrón repositorio.
+* Se implementó CategoryRepository siguiendo el patrón repositorio.
 
-Se creó CategoryController con CRUD completo.
+* Se creó CategoryController con CRUD completo.
 
-Se agregó endpoint para asignar categorías a un libro.
+* Se agregó endpoint para asignar categorías a un libro.
 
-***Decisiones de diseño relevantes (breve)***
+***Decisiones de diseño relevantes***
 
-Se utilizó relationship(..., secondary=...) en ambos modelos para mantener sincronía ORM.
+* Se utilizó relationship(..., secondary=...) en ambos modelos para mantener sincronía ORM.
 
-Los DTO excluyen campos de auditoría y relaciones para evitar sobreexposición de datos.
+* Los DTO excluyen campos de auditoría y relaciones para evitar sobreexposición de datos.
 
-Se centralizó la inyección de repositorios usando Provide, manteniendo cohesión con el diseño base del proyecto.
+* Se centralizó la inyección de repositorios usando Provide, manteniendo cohesión con el diseño base del proyecto.
 
-Se usaron validaciones mínimas en DTOs según lo exigido en la guía, dejando validaciones complejas a controladores.
+* Se usaron validaciones mínimas en DTOs según lo exigido en la guía, dejando validaciones complejas a controladores.
 
-Las migraciones se generaron siguiendo la estructura Alembic existente para evitar inconsistencias.
+* Las migraciones se generaron siguiendo la estructura Alembic existente para evitar inconsistencias.
 
 ## Cumplimiento de Requerimientos - Tarea 2
 
