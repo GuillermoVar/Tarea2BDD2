@@ -17,6 +17,13 @@ class User(BigIntAuditBase):
     fullname: Mapped[str]
     password: Mapped[str]
 
+    # Nuevos campos
+    email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    phone: Mapped[str | None] = mapped_column(String, nullable=True)
+    address: Mapped[str | None] = mapped_column(String, nullable=True)
+    is_active: Mapped[bool] = mapped_column(default=True, nullable=False)
+
+
     loans: Mapped[list["Loan"]] = relationship(back_populates="user")
     reviews: Mapped[list["Review"]] = relationship(back_populates="user")
 

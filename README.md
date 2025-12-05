@@ -120,7 +120,7 @@ Docente: Diego Álvarez S.
 | **1** | Crear modelo Category + relación many-to-many con Book | **CUMPLIDO** | 
 | **2** | Crear modelo Review con relaciones y validaciones | **CUMPLIDO** |
 | **3** | Actualizar modelo Book con inventario, descripción y validaciones | **CUMPLIDO** |
-| **4** | Actualizar modelo User (email, phone, address, is_active) | **** |
+| **4** | Actualizar modelo User (email, phone, address, is_active) | **PARCIAL** |
 | **5** | Actualizar modelo Loan con due_date, fine_amount y LoanStatus | **** |
 | **6** | Implementar métodos avanzados en BookRepository + endpoints | **** |
 | **7** | Implementar métodos en LoanRepository + endpoints | **** |

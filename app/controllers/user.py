@@ -13,6 +13,9 @@ from app.dtos.user import UserCreateDTO, UserReadDTO, UserUpdateDTO
 from app.models import PasswordUpdate, User
 from app.repositories.user import UserRepository, provide_user_repo
 
+import re
+
+EMAIL_REGEX = r"^[\w\.-]+@[\w\.-]+\.\w+$"
 
 class UserController(Controller):
     """Controller for user management operations."""
@@ -44,6 +47,19 @@ class UserController(Controller):
     ) -> User:
         """Create a new user."""
 
+
+        payload = data.as_builtins()
+
+        # --- Validación de email ---
+        if not re.match(EMAIL_REGEX, payload["email"]):
+            raise HTTPException(
+                status_code=400,
+                detail="El email no tiene un formato válido."
+            )
+
+        # is_active NO debe poder ser seteado por el usuario
+        payload.pop("is_active", None)
+
         return users_repo.add_with_hashed_password(data)
 
     @patch("/{id:int}", dto=UserUpdateDTO)
@@ -54,7 +70,24 @@ class UserController(Controller):
         users_repo: UserRepository,
     ) -> User:
         """Update a user by ID."""
-        user, _ = users_repo.get_and_update(match_fields="id", id=id, **data.as_builtins())
+        payload = data.as_builtins()
+
+        # --- Validar email si viene en el body ---
+        if "email" in payload and not re.match(EMAIL_REGEX, payload["email"]):
+            raise HTTPException(
+                status_code=400,
+                detail="El email no tiene un formato válido."
+            )
+
+        # is_active NO debe poder ser modificado desde la API
+        if "is_active" in payload:
+            payload.pop("is_active")
+
+        user, _ = users_repo.get_and_update(
+            match_fields="id",
+            id=id,
+            **payload
+        )
 
         return user
 
