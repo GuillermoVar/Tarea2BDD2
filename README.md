@@ -81,6 +81,37 @@ Docente: Diego Álvarez S.
 
 * Se utilizó get_and_update() y operaciones ORM directas para mantener integridad en actualizaciones parciales.
 
+***Diseño e Implementación — Punto 3 (Extensión del modelo Book)**
+
+* Se agregaron los nuevos campos al modelo Book: stock, description, language, publisher.
+
+* Se definió stock con valor por defecto 1 y como campo obligatorio.
+
+* El campo language se limitó a códigos ISO 639-1 de 2 letras.
+
+* Se creó y aplicó una migración Alembic que añade los nuevos campos a la tabla books.
+
+* Se actualizaron los DTOs de creación y actualización para incluir los nuevos atributos.
+
+* En POST /books se agregaron validaciones:
+
+  * stock > 0
+
+  * language ∈ {es, en, fr, de, it, pt}
+
+* En PATCH /books/{id} se validó que:
+
+  * stock no sea negativo
+
+  * language siga el conjunto permitido
+
+***Decisiones de diseño relevantes***
+
+* Se mantuvo la estructura del ORM y el patrón repositorio para coherencia del proyecto.
+
+* Las validaciones se resolvieron en el controlador para centralizar la lógica de negocio.
+
+* Los valores por defecto y restricciones se definieron tanto en el modelo como en la migración para asegurar consistencia entre aplicación y base de datos.
 
 ## Cumplimiento de Requerimientos - Tarea 2
 
@@ -88,7 +119,7 @@ Docente: Diego Álvarez S.
 | :---: | :--- | :---: |
 | **1** | Crear modelo Category + relación many-to-many con Book | **CUMPLIDO** | 
 | **2** | Crear modelo Review con relaciones y validaciones | **CUMPLIDO** |
-| **3** | Actualizar modelo Book con inventario, descripción y validaciones | **** |
+| **3** | Actualizar modelo Book con inventario, descripción y validaciones | **CUMPLIDO** |
 | **4** | Actualizar modelo User (email, phone, address, is_active) | **** |
 | **5** | Actualizar modelo Loan con due_date, fine_amount y LoanStatus | **** |
 | **6** | Implementar métodos avanzados en BookRepository + endpoints | **** |
