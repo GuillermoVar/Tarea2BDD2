@@ -7,7 +7,7 @@ Docente: Diego Álvarez S.
 
 ## Cambios Implementados 
 
-***Diseño e Implementación — Punto 1 (Category + relación Book–Category)***
+**Diseño e Implementación — Punto 1 (Category + relación Book–Category)**
 
 * Se creó el modelo Category con atributos id, name y description.
 
@@ -43,7 +43,7 @@ Docente: Diego Álvarez S.
 
 * Las migraciones se generaron siguiendo la estructura Alembic existente para evitar inconsistencias.
 
-***Diseño e Implementación — Punto 2 (Review + validaciones)***
+**Diseño e Implementación — Punto 2 (Review + validaciones)**
 
 * Se creó el modelo Review con los atributos: id, review_text, rating, review_date, book_id (FK), user_id (FK).
 
@@ -81,7 +81,7 @@ Docente: Diego Álvarez S.
 
 * Se utilizó get_and_update() y operaciones ORM directas para mantener integridad en actualizaciones parciales.
 
-***Diseño e Implementación — Punto 3 (Extensión del modelo Book)**
+**Diseño e Implementación — Punto 3 (Extensión del modelo Book)**
 
 * Se agregaron los nuevos campos al modelo Book: stock, description, language, publisher.
 
@@ -113,6 +113,18 @@ Docente: Diego Álvarez S.
 
 * Los valores por defecto y restricciones se definieron tanto en el modelo como en la migración para asegurar consistencia entre aplicación y base de datos.
 
+**Actualización del modelo User - Punto 4**
+
+* Se agregaron los nuevos campos: email, phone, address (opcional) e is_active (por defecto True).
+
+* Se creó la migración correspondiente usando Alembic.
+
+* Se actualizó el UserReadDTO para excluir correctamente password y loans.
+
+* En los endpoints de crear y actualizar, se agregó validación de formato de correo mediante expresión regular.
+
+* El campo is_active fue bloqueado en los DTOs de creación y actualización para evitar que el usuario lo modifique directamente.
+
 ## Cumplimiento de Requerimientos - Tarea 2
 
 | Nº | Requerimiento | Estado | 
@@ -120,7 +132,7 @@ Docente: Diego Álvarez S.
 | **1** | Crear modelo Category + relación many-to-many con Book | **CUMPLIDO** | 
 | **2** | Crear modelo Review con relaciones y validaciones | **CUMPLIDO** |
 | **3** | Actualizar modelo Book con inventario, descripción y validaciones | **CUMPLIDO** |
-| **4** | Actualizar modelo User (email, phone, address, is_active) | **PARCIAL** |
+| **4** | Actualizar modelo User (email, phone, address, is_active) | **CUMPLIDO** |
 | **5** | Actualizar modelo Loan con due_date, fine_amount y LoanStatus | **** |
 | **6** | Implementar métodos avanzados en BookRepository + endpoints | **** |
 | **7** | Implementar métodos en LoanRepository + endpoints | **** |
