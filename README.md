@@ -1,3 +1,63 @@
+# API de Gestión de Biblioteca — Tarea 2
+
+Bases de Datos II — Ingeniería en Computación e Informática
+Estudiante: Guillermo Vargas
+Docente: Diego Álvarez S.
+
+## Cambios Implementados 
+
+***Diseño e Implementación — Punto 1 (Category + relación Book–Category) ***
+
+* Se creó el modelo Category con atributos id, name y description.
+
+* Se implementó la relación many-to-many con Book mediante la tabla intermedia books_categories.
+
+* Se configuraron las relaciones ORM en ambos modelos.
+
+* Se generó y aplicó una migración completa con Alembic incluyendo tabla, índices y FK.
+
+Se crearon los DTOs:
+
+  CategoryReadDTO
+
+  CategoryCreateDTO
+
+  CategoryUpdateDTO
+
+Se implementó CategoryRepository siguiendo el patrón repositorio.
+
+Se creó CategoryController con CRUD completo.
+
+Se agregó endpoint para asignar categorías a un libro.
+
+***Decisiones de diseño relevantes (breve)***
+
+Se utilizó relationship(..., secondary=...) en ambos modelos para mantener sincronía ORM.
+
+Los DTO excluyen campos de auditoría y relaciones para evitar sobreexposición de datos.
+
+Se centralizó la inyección de repositorios usando Provide, manteniendo cohesión con el diseño base del proyecto.
+
+Se usaron validaciones mínimas en DTOs según lo exigido en la guía, dejando validaciones complejas a controladores.
+
+Las migraciones se generaron siguiendo la estructura Alembic existente para evitar inconsistencias.
+
+## Cumplimiento de Requerimientos - Tarea 2
+
+| Nº | Requerimiento | Estado | 
+| :---: | :--- | :---: |
+| **1** | Crear modelo Category + relación many-to-many con Book | **CUMPLIDO** | 
+| **2** | Crear modelo Review con relaciones y validaciones | **** |
+| **3** | Actualizar modelo Book con inventario, descripción y validaciones | **** |
+| **4** | Actualizar modelo User (email, phone, address, is_active) | **** |
+| **5** | Actualizar modelo Loan con due_date, fine_amount y LoanStatus | **** |
+| **6** | Implementar métodos avanzados en BookRepository + endpoints | **** |
+| **7** | Implementar métodos en LoanRepository + endpoints | **** |
+| **8** | Crear base de datos inicial + initial_data.sql | **** |
+
+
+
+
 # API con Litestar y PostgreSQL
 
 API REST para gestión de biblioteca que permite administrar usuarios, libros y préstamos. Incluye autenticación JWT y documentación interactiva (Swagger/Scalar).

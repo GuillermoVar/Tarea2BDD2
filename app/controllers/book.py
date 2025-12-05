@@ -13,7 +13,7 @@ from litestar.params import Parameter
 from app.controllers import duplicate_error_handler, not_found_error_handler
 from app.dtos.book import BookCreateDTO, BookReadDTO, BookUpdateDTO
 from app.models import Book, BookStats
-from app.repositories.book import BookRepository, provide_book_repo
+from app.repositories.book import BookRepository, provide_book_repo, provide_category_repo
 
 
 class BookController(Controller):
@@ -22,7 +22,8 @@ class BookController(Controller):
     path = "/books"
     tags = ["books"]
     return_dto = BookReadDTO
-    dependencies = {"books_repo": Provide(provide_book_repo)}
+    dependencies = {"books_repo": Provide(provide_book_repo), "categories_repo": Provide(provide_category_repo),
+}}
     exception_handlers = {
         NotFoundError: not_found_error_handler,
         DuplicateKeyError: duplicate_error_handler,
@@ -128,3 +129,33 @@ class BookController(Controller):
             oldest_publication_year=oldest_year,
             newest_publication_year=newest_year,
         )
+    
+    @post("/{id:int}/assign-categories")
+    async def assign_categories(
+        self,
+        id: int,
+        category_ids: list[int],
+        books_repo: BookRepository,
+        categories_repo: CategoryRepository,
+    ) -> Book:
+        """Assign categories to a book."""
+        # Obtener el libro
+        book = books_repo.get(id)
+
+        # Obtener las categorías existentes
+        categories = categories_repo.list(Category.id.in_(category_ids))
+
+        if len(categories) != len(category_ids):
+            raise HTTPException(
+                status_code=400,
+                detail="Una o más categorías no existen."
+            )
+
+        # Asignar categorías
+        book.categories = categories
+
+        # Guardar cambios
+        books_repo.update(book)
+
+        return book
+
