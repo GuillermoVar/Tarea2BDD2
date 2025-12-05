@@ -43,12 +43,51 @@ Docente: Diego Álvarez S.
 
 * Las migraciones se generaron siguiendo la estructura Alembic existente para evitar inconsistencias.
 
+***Diseño e Implementación — Punto 2 (Review + validaciones)***
+
+* Se creó el modelo Review con los atributos: id, review_text, rating, review_date, book_id (FK), user_id (FK).
+
+* Se implementaron las relaciones ORM correspondientes:
+
+  * Review.book → Book.reviews
+
+  * Review.user → User.reviews
+
+* Se generó y aplicó la migración Alembic creando la tabla reviews con llaves foráneas, índices y restricciones necesarias.
+
+* Se crearon los DTOs:
+
+  * ReviewReadDTO
+
+  * ReviewCreateDTO
+
+  * ReviewUpdateDTO
+
+* Se implementó ReviewRepository siguiendo el patrón de repositorio del proyecto, asegurando coherencia con los repositorios existentes.
+
+* Se creó ReviewController, incluyendo CRUD completo y validaciones específicas:
+
+  * Validación de rating entre 1 y 5.
+
+  * Validación de máximo 3 reseñas por usuario por libro.
+
+  * Asignación automática de review_date = date.today() al crear una reseña.
+
+* Se integró el controlador en la aplicación registrando sus rutas bajo /reviews.
+
+* Decisiones de diseño relevantes
+
+* Se aplicaron validaciones simples desde los DTOs y validaciones más complejas a nivel controlador, siguiendo las pautas del enunciado.
+
+* Se utilizó get_and_update() y operaciones ORM directas para mantener integridad en actualizaciones parciales.
+
+
 ## Cumplimiento de Requerimientos - Tarea 2
 
 | Nº | Requerimiento | Estado | 
 | :---: | :--- | :---: |
 | **1** | Crear modelo Category + relación many-to-many con Book | **CUMPLIDO** | 
-| **2** | Crear modelo Review con relaciones y validaciones | **** |
+| **2** | Crear modelo Review con relaciones y validaciones | **CUMPLIDO** |
 | **3** | Actualizar modelo Book con inventario, descripción y validaciones | **** |
 | **4** | Actualizar modelo User (email, phone, address, is_active) | **** |
 | **5** | Actualizar modelo Loan con due_date, fine_amount y LoanStatus | **** |
